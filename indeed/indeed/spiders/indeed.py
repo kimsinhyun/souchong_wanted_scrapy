@@ -1,6 +1,7 @@
 import re
 import scrapy
 import copy
+import time
 import hashlib
 import datetime
 from pprint import pprint
@@ -15,22 +16,26 @@ country = "www"
 class Spider(scrapy.Spider):
     name = 'indeed'
     page_num = 32
-    start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(page_num*10, 700 * 10,10)]
-    def __init__(self):
+    # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(215*10, 500 * 10,10)]
+    start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 2 * 10,10)]
+    # start_urls = [f"https://www.indeed.com/jobs?q=data&sc=0kf%3Ajt(internship)%3B&start={page}&vjk=547fa69c5a112897" for page in range(5*10, 500 * 10,10)]
+    def __init__(self, COOKIE_NUM=0):
         self.skill = "Python"
         self.place = "Korea"
+        self.COOKIE_NUM = COOKIE_NUM
     def start_requests(self):
         for url in self.start_urls:
             print("start scrapping : " + url)
+            time.sleep(5)
             yield scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
         item = dict()
         # job_post_details=response.xpath("//div[@class='j_joblist']/div[@class='e']")
         job_post_details=response.xpath('//a[@data-hide-spinner="true"]')
-        Next_page_label = response.xpath('//a[@aria-label="Next"]')
+        Next_page_label = response.xpath('//a[@aria-label="Next Page"]')
         #마지막 페이지이면 stop (실제로 stop보다는 아무것도 return 하지 않음, 중단시키고 싶은데 아직 방법을 모르겠음)
-        if(Next_page_label is None):
+        if(len(Next_page_label) == 0):
             print("Last Page! Stop Scraping")
             raise scrapy.exceptions.CloseSpider
         #다음 페이지가 존재하면
@@ -55,9 +60,10 @@ class Spider(scrapy.Spider):
         item['company_name'] = extract_text(response.xpath('//*[@id="viewJobSSRRoot"]/div[2]/div/div[3]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/div[2]/div/a').get())
         item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replace("width:", "").replace("px","")
         item['company_reviews'] = extract_text(response.xpath('//div[@class="icl-Ratings-count"]').get()).replace(" reviews", "").replace(",","")
-        item['job_salary'] = extract_text(response.xpath('//*[@id="salaryInfoAndJobType"]/span[1]').get())
+        item['job_salary'] = extract_text(response.xpath('//span[@class="icl-u-xs-mr--xs attribute_snippet"]').get())
         item['job_salary_estimated_by_indeed'] = extract_text(response.xpath('//*[@id="salaryGuide"]/ul/li[2]/text()').get()).split(" is Indeed's")[0]
-        temp_benefits_list  = response.xpath('//*[@id="benefits"]/div/div/div[*]/div/div').extract()
+        item['job_contract_type'] = extract_text(response.xpath('//span[@class="icl-u-xs-mr--xs attribute_snippet"]').get())
+        temp_benefits_list  = response.xpath('//span[@class="jobsearch-JobMetadataHeader-item  icl-u-xs-mt--xs"]').extract()
         item['benefits'] = self.parse_benefits(temp_benefits_list)
         item['job_description'] = extract_text(response.xpath('//*[@id="jobDescriptionText"]').get())
         temp_post_date = extract_text(response.xpath('//*[@id="hiringInsightsSectionRoot"]/p/span[2]').get())

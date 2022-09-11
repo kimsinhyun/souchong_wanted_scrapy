@@ -15,14 +15,14 @@ import pandas as pd
 from itemadapter import is_item, ItemAdapter
 import indeed.chrome_settings as ChromeSetting
 from scrapy.http import HtmlResponse
-
+from scrapy.utils.project import get_project_settings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains 
 
 
 class SeleniumMiddleWare:
-    def __init__(self) -> None:
-        self.browser= ChromeSetting.WebDriver().driver_instance
+    # def __init__(self) -> None:
+        # self.browser= ChromeSetting.WebDriver().driver_instance
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -44,6 +44,7 @@ class SeleniumMiddleWare:
         pass
 
     def spider_opened(self, spider):
+        self.browser= ChromeSetting.WebDriver(spider.COOKIE_NUM).driver_instance
         spider.logger.info('Spider opened: %s' % spider.name)
 
     def spider_closed(self):

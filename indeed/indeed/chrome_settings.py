@@ -19,8 +19,8 @@ class Spoofer(object):
         return ua
 
 class DriverOptions(object):
-     def __init__(self ):
-        cookie_dir = str(os.path.abspath(os.getcwd())) + "\\cookies\\" +str(1) + '\Chrome_cookie'
+     def __init__(self,COOKIE_NUM):
+        cookie_dir = str(os.path.abspath(os.getcwd())) + "\\cookies\\" +str(COOKIE_NUM) + '\Chrome_cookie'
         print("cookie_dir: " + cookie_dir)
         self.options = Options()
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -37,14 +37,18 @@ class DriverOptions(object):
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
         self.options.add_argument("disable-infobars")
+        
+
+
+
         self.helperSpoofer = Spoofer()
         ua = UserAgent().random
         print(ua)
         self.options.add_argument(f"user-agent={ua}")
 
 class WebDriver(DriverOptions,object):
-    def __init__(self, path="",):
-        DriverOptions.__init__(self,)
+    def __init__(self, COOKIE_NUM=0,path="",):
+        DriverOptions.__init__(self,COOKIE_NUM)
 #         self.user_proxy = user_proxy
         self.driver_instance = self.get_driver()
     def get_driver(self):
