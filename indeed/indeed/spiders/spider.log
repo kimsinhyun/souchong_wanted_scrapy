@@ -1,0 +1,401 @@
+2022-09-11 16:17:16 [scrapy.utils.log] INFO: Scrapy 2.6.2 started (bot: indeed)
+2022-09-11 16:17:16 [scrapy.utils.log] INFO: Versions: lxml 4.9.1.0, libxml2 2.9.14, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 22.4.0, Python 3.10.2 | packaged by conda-forge | (main, Mar  8 2022, 15:47:33) [MSC v.1929 64 bit (AMD64)], pyOpenSSL 22.0.0 (OpenSSL 3.0.5 5 Jul 2022), cryptography 37.0.4, Platform Windows-10-10.0.19044-SP0
+2022-09-11 16:17:16 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'indeed',
+ 'CONCURRENT_REQUESTS': 10,
+ 'COOKIES_ENABLED': False,
+ 'DOWNLOAD_DELAY': 5,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_FILE': 'spider.log',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'indeed.spiders',
+ 'SPIDER_MODULES': ['indeed.spiders']}
+2022-09-11 16:17:16 [scrapy.extensions.telnet] INFO: Telnet Password: bea181f09eb23a30
+2022-09-11 16:17:16 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-09-11 16:17:18 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'indeed.middlewares.SeleniumMiddleWare',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2022-09-11 16:17:18 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2022-09-11 16:17:18 [scrapy.middleware] INFO: Enabled item pipelines:
+['indeed.pipelines.NewPipeline_mongo']
+2022-09-11 16:17:18 [scrapy.core.engine] INFO: Spider opened
+2022-09-11 16:17:18 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2022-09-11 16:17:18 [indeed] INFO: Spider opened: indeed
+2022-09-11 16:17:18 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-09-11 16:17:54 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=bf49feb311ebb947&fccid=c14cd58239fe452f&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:17:54 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=d7c9782143f5dd97&fccid=b6f5f85531f8739a&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=207862313eadf6eb&fccid=aaf3b433897ea465&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=10)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=90c004586a14f0cb&fccid=79f2cf3602c328e0&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=84a4bd0ef0848808&fccid=95485c6456ed2114&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=95461d80d53bfbb6&fccid=aaf3b433897ea465&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=f4f1eac9b32d4642&fccid=68bc43ebf2f50281&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:18:02 [scrapy.core.scraper] ERROR: Spider error processing <GET https://www.indeed.com/viewjob?jk=67da1c29c4eee515&fccid=fa8a98db2fc93f9f&vjs=3> (referer: https://www.indeed.com/jobs?q=data&sort=date&l=&start=0)
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\defer.py", line 132, in iter_errback
+    yield next(it)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\utils\python.py", line 354, in __next__
+    return next(self.data)
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\offsite.py", line 29, in process_spider_output
+    for x in result:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\referer.py", line 342, in <genexpr>
+    return (_set_referer(r) for r in result or ())
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\urllength.py", line 40, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\spidermiddlewares\depth.py", line 58, in <genexpr>
+    return (r for r in result or () if _filter(r))
+  File "C:\ProgramData\Anaconda3\envs\job51\lib\site-packages\scrapy\core\spidermw.py", line 66, in _evaluate_iterable
+    for r in iterable:
+  File "C:\Users\Administrator\Desktop\sinhyun_code\indeed\scrapy\indeed\indeed\spiders\indeed.py", line 55, in parse_detail
+    item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replcae("width:", "").replace("px","")
+AttributeError: 'str' object has no attribute 'replcae'
+2022-09-11 16:19:00 [scrapy.utils.log] INFO: Scrapy 2.6.2 started (bot: indeed)
+2022-09-11 16:19:00 [scrapy.utils.log] INFO: Versions: lxml 4.9.1.0, libxml2 2.9.14, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 22.4.0, Python 3.10.2 | packaged by conda-forge | (main, Mar  8 2022, 15:47:33) [MSC v.1929 64 bit (AMD64)], pyOpenSSL 22.0.0 (OpenSSL 3.0.5 5 Jul 2022), cryptography 37.0.4, Platform Windows-10-10.0.19044-SP0
+2022-09-11 16:19:00 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'indeed',
+ 'CONCURRENT_REQUESTS': 10,
+ 'COOKIES_ENABLED': False,
+ 'DOWNLOAD_DELAY': 5,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_FILE': 'spider.log',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'indeed.spiders',
+ 'SPIDER_MODULES': ['indeed.spiders']}
+2022-09-11 16:19:00 [scrapy.extensions.telnet] INFO: Telnet Password: b2bbef5205048d59
+2022-09-11 16:19:00 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-09-11 16:19:01 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'indeed.middlewares.SeleniumMiddleWare',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2022-09-11 16:19:01 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2022-09-11 16:19:01 [scrapy.middleware] INFO: Enabled item pipelines:
+['indeed.pipelines.NewPipeline_mongo']
+2022-09-11 16:19:01 [scrapy.core.engine] INFO: Spider opened
+2022-09-11 16:19:01 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2022-09-11 16:19:01 [indeed] INFO: Spider opened: indeed
+2022-09-11 16:19:01 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-09-11 16:20:08 [scrapy.extensions.logstats] INFO: Crawled 36 pages (at 36 pages/min), scraped 18 items (at 18 items/min)
+2022-09-11 16:21:04 [scrapy.extensions.logstats] INFO: Crawled 67 pages (at 31 pages/min), scraped 60 items (at 42 items/min)
+2022-09-11 16:22:07 [scrapy.extensions.logstats] INFO: Crawled 102 pages (at 35 pages/min), scraped 86 items (at 26 items/min)
+2022-09-11 16:23:11 [scrapy.extensions.logstats] INFO: Crawled 137 pages (at 35 pages/min), scraped 111 items (at 25 items/min)
+2022-09-11 16:24:17 [scrapy.extensions.logstats] INFO: Crawled 170 pages (at 33 pages/min), scraped 145 items (at 34 items/min)
+2022-09-11 16:25:14 [scrapy.extensions.logstats] INFO: Crawled 205 pages (at 35 pages/min), scraped 167 items (at 22 items/min)
+2022-09-11 16:26:16 [scrapy.extensions.logstats] INFO: Crawled 238 pages (at 33 pages/min), scraped 205 items (at 38 items/min)
+2022-09-11 16:27:18 [scrapy.extensions.logstats] INFO: Crawled 271 pages (at 33 pages/min), scraped 241 items (at 36 items/min)
+2022-09-11 16:28:14 [scrapy.extensions.logstats] INFO: Crawled 300 pages (at 29 pages/min), scraped 267 items (at 26 items/min)
+2022-09-11 16:29:15 [scrapy.extensions.logstats] INFO: Crawled 333 pages (at 33 pages/min), scraped 298 items (at 31 items/min)
+2022-09-11 16:30:13 [scrapy.extensions.logstats] INFO: Crawled 361 pages (at 28 pages/min), scraped 324 items (at 26 items/min)
+2022-09-11 16:31:14 [scrapy.extensions.logstats] INFO: Crawled 394 pages (at 33 pages/min), scraped 354 items (at 30 items/min)
+2022-09-11 16:32:15 [scrapy.extensions.logstats] INFO: Crawled 424 pages (at 30 pages/min), scraped 388 items (at 34 items/min)
+2022-09-11 16:33:16 [scrapy.extensions.logstats] INFO: Crawled 457 pages (at 33 pages/min), scraped 414 items (at 26 items/min)
+2022-09-11 16:33:57 [scrapy.core.engine] INFO: Closing spider (finished)
+2022-09-11 16:33:57 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/response_bytes': 138502276,
+ 'downloader/response_count': 478,
+ 'downloader/response_status_count/200': 478,
+ 'dupefilter/filtered': 2,
+ 'elapsed_time_seconds': 895.829462,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2022, 9, 11, 7, 33, 57, 673484),
+ 'item_scraped_count': 448,
+ 'log_count/INFO': 25,
+ 'request_depth_max': 1,
+ 'response_received_count': 478,
+ 'scheduler/dequeued': 478,
+ 'scheduler/dequeued/memory': 478,
+ 'scheduler/enqueued': 478,
+ 'scheduler/enqueued/memory': 478,
+ 'start_time': datetime.datetime(2022, 9, 11, 7, 19, 1, 844022)}
+2022-09-11 16:33:57 [scrapy.core.engine] INFO: Spider closed (finished)
+2022-09-11 16:37:53 [scrapy.utils.log] INFO: Scrapy 2.6.2 started (bot: indeed)
+2022-09-11 16:37:53 [scrapy.utils.log] INFO: Versions: lxml 4.9.1.0, libxml2 2.9.14, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 22.4.0, Python 3.10.2 | packaged by conda-forge | (main, Mar  8 2022, 15:47:33) [MSC v.1929 64 bit (AMD64)], pyOpenSSL 22.0.0 (OpenSSL 3.0.5 5 Jul 2022), cryptography 37.0.4, Platform Windows-10-10.0.19044-SP0
+2022-09-11 16:37:53 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'indeed',
+ 'CONCURRENT_REQUESTS': 10,
+ 'COOKIES_ENABLED': False,
+ 'DOWNLOAD_DELAY': 5,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_FILE': 'spider.log',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'indeed.spiders',
+ 'SPIDER_MODULES': ['indeed.spiders']}
+2022-09-11 16:37:53 [scrapy.extensions.telnet] INFO: Telnet Password: 5c735336d8a61a03
+2022-09-11 16:37:53 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2022-09-11 16:37:55 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'indeed.middlewares.SeleniumMiddleWare',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2022-09-11 16:37:55 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2022-09-11 16:37:55 [scrapy.middleware] INFO: Enabled item pipelines:
+['indeed.pipelines.NewPipeline_mongo']
+2022-09-11 16:37:55 [scrapy.core.engine] INFO: Spider opened
+2022-09-11 16:37:55 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2022-09-11 16:37:55 [indeed] INFO: Spider opened: indeed
+2022-09-11 16:37:55 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-09-11 16:39:00 [scrapy.extensions.logstats] INFO: Crawled 32 pages (at 32 pages/min), scraped 22 items (at 22 items/min)
+2022-09-11 16:40:00 [scrapy.extensions.logstats] INFO: Crawled 63 pages (at 31 pages/min), scraped 42 items (at 20 items/min)
+2022-09-11 16:41:05 [scrapy.extensions.logstats] INFO: Crawled 94 pages (at 31 pages/min), scraped 75 items (at 33 items/min)
+2022-09-11 16:42:06 [scrapy.extensions.logstats] INFO: Crawled 126 pages (at 32 pages/min), scraped 100 items (at 25 items/min)
+2022-09-11 16:43:06 [scrapy.extensions.logstats] INFO: Crawled 156 pages (at 30 pages/min), scraped 137 items (at 37 items/min)
+2022-09-11 16:44:02 [scrapy.extensions.logstats] INFO: Crawled 183 pages (at 27 pages/min), scraped 154 items (at 17 items/min)
+2022-09-11 16:45:13 [scrapy.extensions.logstats] INFO: Crawled 221 pages (at 38 pages/min), scraped 187 items (at 33 items/min)
+2022-09-11 16:46:09 [scrapy.extensions.logstats] INFO: Crawled 248 pages (at 27 pages/min), scraped 219 items (at 32 items/min)
+2022-09-11 16:47:12 [scrapy.extensions.logstats] INFO: Crawled 280 pages (at 32 pages/min), scraped 244 items (at 25 items/min)
+2022-09-11 16:48:14 [scrapy.extensions.logstats] INFO: Crawled 312 pages (at 32 pages/min), scraped 280 items (at 36 items/min)
+2022-09-11 16:49:24 [scrapy.extensions.logstats] INFO: Crawled 347 pages (at 35 pages/min), scraped 305 items (at 25 items/min)
+2022-09-11 16:50:04 [scrapy.extensions.logstats] INFO: Crawled 366 pages (at 19 pages/min), scraped 328 items (at 23 items/min)
+2022-09-11 16:50:57 [scrapy.extensions.logstats] INFO: Crawled 393 pages (at 27 pages/min), scraped 359 items (at 31 items/min)
