@@ -3,21 +3,12 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-import pyautogui
 from scrapy import signals
 import time
-import random
-import socket
-import struct
-import pandas as pd
 
 # useful for handling different item types with a single interface
-from itemadapter import is_item, ItemAdapter
 import indeed.chrome_settings as ChromeSetting
 from scrapy.http import HtmlResponse
-from scrapy.utils.project import get_project_settings
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains 
 
 
 class SeleniumMiddleWare:
@@ -32,7 +23,7 @@ class SeleniumMiddleWare:
         return s
 
     def process_request(self, request, spider):
-        print("start process request:" + request.url)
+        # print("start process request:" + request.url)
         self.browser.get(request.url)
         time.sleep(1)
         return HtmlResponse(url=request.url, body=self.browser.page_source, request=request, encoding="utf-8", status=200)

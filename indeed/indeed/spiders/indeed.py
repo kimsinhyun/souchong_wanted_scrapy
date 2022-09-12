@@ -17,12 +17,15 @@ class Spider(scrapy.Spider):
     name = 'indeed'
     page_num = 32
     # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(215*10, 500 * 10,10)]
-    start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 2 * 10,10)]
+    # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 1000 * 10,10)]
     # start_urls = [f"https://www.indeed.com/jobs?q=data&sc=0kf%3Ajt(internship)%3B&start={page}&vjk=547fa69c5a112897" for page in range(5*10, 500 * 10,10)]
-    def __init__(self, COOKIE_NUM=0):
+    def __init__(self, COOKIE_NUM=0,WHAT="data"):
         self.skill = "Python"
         self.place = "Korea"
         self.COOKIE_NUM = COOKIE_NUM
+        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(0*10, 500 * 10,10)]
+        print(f"COOKIE_NUM: {COOKIE_NUM}")
+        print(f"WHAT: {WHAT}")
     def start_requests(self):
         for url in self.start_urls:
             print("start scrapping : " + url)
@@ -37,12 +40,14 @@ class Spider(scrapy.Spider):
         #마지막 페이지이면 stop (실제로 stop보다는 아무것도 return 하지 않음, 중단시키고 싶은데 아직 방법을 모르겠음)
         if(len(Next_page_label) == 0):
             print("Last Page! Stop Scraping")
-            raise scrapy.exceptions.CloseSpider
+            Next_page_label = response.xpath('//a[@aria-label="Next"]')
+            if(len(Next_page_label) == 0):
+                raise scrapy.exceptions.CloseSpider
         #다음 페이지가 존재하면
         else:
             print(f"length of job_post_details: {len(job_post_details)}")
             for page_num, entry in enumerate(job_post_details):
-                print("page_num: " + str(page_num))
+                # print("page_num: " + str(page_num))
                 item["post_url"] = entry.xpath("./@href").get()
                 item['job_title'] = extract_text(entry.get())
                 item['company_location'] = extract_text(response.xpath(\
