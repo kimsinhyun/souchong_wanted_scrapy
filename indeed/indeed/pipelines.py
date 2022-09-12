@@ -23,7 +23,7 @@ class NewPipeline_mongo:
         #print(crawler.settings.get('USERNAME'))
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI','165.132.172.93'),
-            mongo_db=crawler.settings.get('MONGO_DB','indeed_data_ver2'),
+            mongo_db=crawler.settings.get('MONGO_DB','indeed_data'),
             account = crawler.settings.get('USERNAME','thwhd1'),
             passwd = crawler.settings.get('PWD','thwhd1')
         )

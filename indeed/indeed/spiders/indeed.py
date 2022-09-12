@@ -19,13 +19,16 @@ class Spider(scrapy.Spider):
     # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(215*10, 500 * 10,10)]
     # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 1000 * 10,10)]
     # start_urls = [f"https://www.indeed.com/jobs?q=data&sc=0kf%3Ajt(internship)%3B&start={page}&vjk=547fa69c5a112897" for page in range(5*10, 500 * 10,10)]
-    def __init__(self, COOKIE_NUM=0,WHAT="data"):
+    def __init__(self, COOKIE_NUM=0,WHAT="data",START_PAGE=0):
         self.skill = "Python"
         self.place = "Korea"
         self.COOKIE_NUM = COOKIE_NUM
-        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(0*10, 500 * 10,10)]
+        self.WHAT = WHAT
+        self.START_PAGE = int(START_PAGE)
+        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 3000 * 10,10)]
         print(f"COOKIE_NUM: {COOKIE_NUM}")
         print(f"WHAT: {WHAT}")
+        print(f"START_PAGE: {START_PAGE}")
     def start_requests(self):
         for url in self.start_urls:
             print("start scrapping : " + url)
@@ -34,20 +37,21 @@ class Spider(scrapy.Spider):
 
     def parse(self, response):
         item = dict()
+        print("start parse")
         # job_post_details=response.xpath("//div[@class='j_joblist']/div[@class='e']")
         job_post_details=response.xpath('//a[@data-hide-spinner="true"]')
         Next_page_label = response.xpath('//a[@aria-label="Next Page"]')
         #마지막 페이지이면 stop (실제로 stop보다는 아무것도 return 하지 않음, 중단시키고 싶은데 아직 방법을 모르겠음)
         if(len(Next_page_label) == 0):
-            print("Last Page! Stop Scraping")
             Next_page_label = response.xpath('//a[@aria-label="Next"]')
             if(len(Next_page_label) == 0):
+                print("Last Page! Stop Scraping")
                 raise scrapy.exceptions.CloseSpider
         #다음 페이지가 존재하면
         else:
             print(f"length of job_post_details: {len(job_post_details)}")
             for page_num, entry in enumerate(job_post_details):
-                # print("page_num: " + str(page_num))
+                item['search_keyword'] = self.WHAT
                 item["post_url"] = entry.xpath("./@href").get()
                 item['job_title'] = extract_text(entry.get())
                 item['company_location'] = extract_text(response.xpath(\
@@ -74,7 +78,7 @@ class Spider(scrapy.Spider):
         temp_post_date = extract_text(response.xpath('//*[@id="hiringInsightsSectionRoot"]/p/span[2]').get())
         item['post_date'] = self.parse_date(temp_post_date)
         
-        encoded_string = (item['job_title'] + item['post_date']).encode()
+        encoded_string = (item['job_title'] + item['post_url']).encode()
         hexdigest = hashlib.sha256(encoded_string).hexdigest()
         item['hash_id'] = hexdigest
         # pprint(item)
