@@ -20,7 +20,7 @@ class Spoofer(object):
 
 class DriverOptions(object):
      def __init__(self,COOKIE_NUM):
-        cookie_dir = str(os.path.abspath(os.getcwd())) + "\\cookies\\" +str(COOKIE_NUM) + '\Chrome_cookie'
+        cookie_dir = str(os.path.abspath(os.getcwd())) + "/cookies/" +str(COOKIE_NUM) + '/Chrome_cookie'
         print("cookie_dir: " + cookie_dir)
         self.options = Options()
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -58,10 +58,10 @@ class WebDriver(DriverOptions,object):
         chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]  #크롬드라이버 버전 확인
 
         try:     
-            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver.exe',options=self.options)   
+            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver',options=self.options)   
         except:
             chromedriver_autoinstaller.install(True)
-            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver.exe',options=self.options)
+            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver',options=self.options)
 #         driver = webdriver.Chrome(path, options=self.options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {

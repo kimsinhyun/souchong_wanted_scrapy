@@ -27,7 +27,7 @@ class Spider(scrapy.Spider):
         self.COOKIE_NUM = COOKIE_NUM
         self.WHAT = WHAT
         self.START_PAGE = int(START_PAGE)
-        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 300 * 10,10)]
+        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 2 * 10,10)]
         # pid = os.getpid()
         # print(f"os.getpid = {pid}")
         print(f"COOKIE_NUM: {COOKIE_NUM}")

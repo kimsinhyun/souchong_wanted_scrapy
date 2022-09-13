@@ -144,7 +144,7 @@ def make_cmd_list(COOKIE_NUM_LIST, WHAT_LIST):
     return cmd_list
 
 def close_all_chrome_processes():
-    PROCNAME = "chrome.exe"
+    PROCNAME = "chrome"
     for proc in psutil.process_iter():
         # check whether the process name matches
         if proc.name() == PROCNAME:
