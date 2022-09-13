@@ -2,10 +2,10 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
+import sys
 from scrapy import signals
 import time
-
+import scrapy
 # useful for handling different item types with a single interface
 import indeed.chrome_settings as ChromeSetting
 from scrapy.http import HtmlResponse
@@ -24,9 +24,16 @@ class SeleniumMiddleWare:
 
     def process_request(self, request, spider):
         # print("start process request:" + request.url)
-        self.browser.get(request.url)
-        time.sleep(0.5)
-        return HtmlResponse(url=request.url, body=self.browser.page_source, request=request, encoding="utf-8", status=200)
+        try:
+            self.browser.get(request.url)
+            time.sleep(0.5)
+            return HtmlResponse(url=request.url, body=self.browser.page_source, request=request, encoding="utf-8", status=200)
+        except Exception as e:
+            # print("something wrong2")
+            # print(e)
+            # spider.close_down = True
+            # sys.exit("SHUT DOWN EVERYTHING!")
+            raise scrapy.exceptions.CloseSpider(reason="driver problem")
 
     def process_response(self, request, response, spider):
         return response

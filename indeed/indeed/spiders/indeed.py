@@ -27,7 +27,7 @@ class Spider(scrapy.Spider):
         self.COOKIE_NUM = COOKIE_NUM
         self.WHAT = WHAT
         self.START_PAGE = int(START_PAGE)
-        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 2 * 10,10)]
+        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 150 * 10,10)]
         # pid = os.getpid()
         # print(f"os.getpid = {pid}")
         print(f"COOKIE_NUM: {COOKIE_NUM}")
@@ -35,13 +35,20 @@ class Spider(scrapy.Spider):
         print(f"START_PAGE: {START_PAGE}")
     def start_requests(self):
         for url in self.start_urls:
-            print("start scrapping : " + url)
-            time.sleep(5)
-            yield scrapy.Request(url, callback=self.parse)
+            # print("start scrapping : " + url)
+            # time.sleep(5)
+            time.sleep(1)
+            try:
+                yield scrapy.Request(url, callback=self.parse)
+            except Exception as e:
+                print("something wrong")
+                print(e)
+                raise scrapy.exceptions.CloseSpider()
+
 
     def parse(self, response):
         item = dict()
-        print("start parse")
+        # print("start parse")
         
         # job_post_details=response.xpath("//div[@class='j_joblist']/div[@class='e']")
         job_post_details=response.xpath('//a[@data-hide-spinner="true"]')
@@ -52,10 +59,10 @@ class Spider(scrapy.Spider):
             if(len(Next_page_label) == 0):
                 print("Last Page! Stop Scraping")
                 print(f"os.getpid = {os.getpid}")
-                raise scrapy.exceptions.CloseSpider
+                raise scrapy.exceptions.CloseSpider("Close Chrome")
         #다음 페이지가 존재하면
         else:
-            print(f"length of job_post_details: {len(job_post_details)}")
+            # print(f"length of job_post_details: {len(job_post_details)}")
             for page_num, entry in enumerate(job_post_details):
                 item['search_keyword'] = self.WHAT
                 item["post_url"] = entry.xpath("./@href").get()

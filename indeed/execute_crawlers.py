@@ -164,9 +164,10 @@ if __name__ == "__main__":
     print(cmd_list[0])
     for i in range(len(WHAT_LIST)):
         print(f"{i}th iteration")
-        proc = subprocess.Popen(cmd_list[i], shell=True)
-        concurrent_processes.append(proc)
-        if((i % 5 == 0) and i!=0):
+        if((i % 5 != 0) or i==0):
+            proc = subprocess.Popen(cmd_list[i], shell=True)
+            concurrent_processes.append(proc)
+        else:
             for p in concurrent_processes:
                 p.wait()
             print("Close all Chrome processes")
