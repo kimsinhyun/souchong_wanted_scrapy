@@ -25,7 +25,7 @@ class SeleniumMiddleWare:
     def process_request(self, request, spider):
         # print("start process request:" + request.url)
         self.browser.get(request.url)
-        time.sleep(1)
+        time.sleep(0.5)
         return HtmlResponse(url=request.url, body=self.browser.page_source, request=request, encoding="utf-8", status=200)
 
     def process_response(self, request, response, spider):

@@ -1,4 +1,5 @@
 import re
+import os
 import scrapy
 import copy
 import time
@@ -16,6 +17,7 @@ country = "www"
 class Spider(scrapy.Spider):
     name = 'indeed'
     page_num = 32
+    
     # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(215*10, 500 * 10,10)]
     # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 1000 * 10,10)]
     # start_urls = [f"https://www.indeed.com/jobs?q=data&sc=0kf%3Ajt(internship)%3B&start={page}&vjk=547fa69c5a112897" for page in range(5*10, 500 * 10,10)]
@@ -25,7 +27,9 @@ class Spider(scrapy.Spider):
         self.COOKIE_NUM = COOKIE_NUM
         self.WHAT = WHAT
         self.START_PAGE = int(START_PAGE)
-        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 3000 * 10,10)]
+        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 300 * 10,10)]
+        # pid = os.getpid()
+        # print(f"os.getpid = {pid}")
         print(f"COOKIE_NUM: {COOKIE_NUM}")
         print(f"WHAT: {WHAT}")
         print(f"START_PAGE: {START_PAGE}")
@@ -38,6 +42,7 @@ class Spider(scrapy.Spider):
     def parse(self, response):
         item = dict()
         print("start parse")
+        
         # job_post_details=response.xpath("//div[@class='j_joblist']/div[@class='e']")
         job_post_details=response.xpath('//a[@data-hide-spinner="true"]')
         Next_page_label = response.xpath('//a[@aria-label="Next Page"]')
@@ -46,6 +51,7 @@ class Spider(scrapy.Spider):
             Next_page_label = response.xpath('//a[@aria-label="Next"]')
             if(len(Next_page_label) == 0):
                 print("Last Page! Stop Scraping")
+                print(f"os.getpid = {os.getpid}")
                 raise scrapy.exceptions.CloseSpider
         #다음 페이지가 존재하면
         else:

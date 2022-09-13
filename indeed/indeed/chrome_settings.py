@@ -44,7 +44,9 @@ class DriverOptions(object):
         self.helperSpoofer = Spoofer()
         ua = UserAgent().random
         print(ua)
-        self.options.add_argument(f"user-agent={ua}")
+        # self.options.add_argument(f"user-agent={ua}")
+        self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36")
+        
 
 class WebDriver(DriverOptions,object):
     def __init__(self, COOKIE_NUM=0,path="",):
