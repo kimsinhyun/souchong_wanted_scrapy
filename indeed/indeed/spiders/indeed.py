@@ -36,8 +36,8 @@ class Spider(scrapy.Spider):
     def start_requests(self):
         for url in self.start_urls:
             # print("start scrapping : " + url)
-            # time.sleep(5)
-            time.sleep(1)
+            time.sleep(8)
+            # time.sleep(1)
             try:
                 yield scrapy.Request(url, callback=self.parse)
             except Exception as e:
@@ -58,7 +58,7 @@ class Spider(scrapy.Spider):
             Next_page_label = response.xpath('//a[@aria-label="Next"]')
             if(len(Next_page_label) == 0):
                 print("Last Page! Stop Scraping")
-                print(f"os.getpid = {os.getpid}")
+                # print(f"os.getpid = {os.getpid}")
                 raise scrapy.exceptions.CloseSpider("Close Chrome")
         #다음 페이지가 존재하면
         else:

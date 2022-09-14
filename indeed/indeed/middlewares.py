@@ -9,6 +9,7 @@ import scrapy
 # useful for handling different item types with a single interface
 import indeed.chrome_settings as ChromeSetting
 from scrapy.http import HtmlResponse
+from selenium.common.exceptions import TimeoutException
 
 
 class SeleniumMiddleWare:
@@ -26,14 +27,15 @@ class SeleniumMiddleWare:
         # print("start process request:" + request.url)
         try:
             self.browser.get(request.url)
+            self.browser.set_page_load_timeout(100)
             time.sleep(0.5)
             return HtmlResponse(url=request.url, body=self.browser.page_source, request=request, encoding="utf-8", status=200)
         except Exception as e:
-            # print("something wrong2")
-            # print(e)
-            # spider.close_down = True
-            # sys.exit("SHUT DOWN EVERYTHING!")
+            # self.browser.execute_script("window.stop()")
+            self.browser.quit()
+            print("loading time too long... close")
             raise scrapy.exceptions.CloseSpider(reason="driver problem")
+            # raise scrapy.exceptions.CloseSpider("Close Chrome")
 
     def process_response(self, request, response, spider):
         return response

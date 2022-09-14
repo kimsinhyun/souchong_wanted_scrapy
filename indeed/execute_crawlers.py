@@ -1,4 +1,4 @@
-COOKIE_NUM_LIST= [i for i in range(5)]
+COOKIE_NUM_LIST= [i for i in range(7)]
 WHAT_LIST = ['data','Back-End','Front-End','Network','Game Developer','AI','computer vision','system engineer']
 WHAT_LIST = [   #Technical support
                 'Computer technician',
@@ -140,7 +140,7 @@ from xml.etree.ElementTree import C14NWriterTarget
 import psutil
 
 def make_cmd_list(COOKIE_NUM_LIST, WHAT_LIST):
-    cmd_list = [f'scrapy crawl indeed -a COOKIE_NUM={COOKIE_NUM_LIST[i%5]} -a WHAT="{WHAT_LIST[i]}"' for i in range(len(WHAT_LIST))]
+    cmd_list = [f'scrapy crawl indeed -a COOKIE_NUM={COOKIE_NUM_LIST[i%7]} -a WHAT="{WHAT_LIST[i]}"' for i in range(len(WHAT_LIST))]
     return cmd_list
 
 def close_all_chrome_processes():
@@ -163,8 +163,10 @@ if __name__ == "__main__":
     print(len(cmd_list))
     print(cmd_list[0])
     for i in range(len(WHAT_LIST)):
+    # for i in range(50,len(WHAT_LIST)):
         print(f"{i}th iteration")
-        if((i % 5 != 0) or i==0):
+        if((i % 7 != 0) or i==0):
+            print(f"i : {i}")
             proc = subprocess.Popen(cmd_list[i], shell=True)
             concurrent_processes.append(proc)
         else:
