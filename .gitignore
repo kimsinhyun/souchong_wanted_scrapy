@@ -3,3 +3,4 @@
 10*/
 cookies
 __pycache__
+*.log
