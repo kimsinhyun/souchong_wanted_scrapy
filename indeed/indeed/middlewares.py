@@ -44,7 +44,10 @@ class SeleniumMiddleWare:
         pass
 
     def spider_opened(self, spider):
-        self.browser= ChromeSetting.WebDriver(spider.COOKIE_NUM).driver_instance
+        try:
+            self.browser= ChromeSetting.WebDriver(spider.COOKIE_NUM).driver_instance
+        except:
+            self.browser= ChromeSetting.WebDriver(10).driver_instance
         spider.logger.info('Spider opened: %s' % spider.name)
 
     def spider_closed(self):

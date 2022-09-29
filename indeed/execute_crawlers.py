@@ -132,6 +132,20 @@ WHAT_LIST = [   #Technical support
                 "Information management systems director",
                 "Senior IT consultant",
                 "Technical lead",
+                "CUDA",
+                "JAVA",
+                "Python",
+                "c++",
+                "C language",
+                "java spring",
+                "hadoop",
+                "apache spark",
+                "visualization",
+                "c#",
+                "Deep learning",
+                "Machine learning",
+                "AI",
+                
                 ]
 
 import os
@@ -163,7 +177,7 @@ if __name__ == "__main__":
     print(len(cmd_list))
     print(cmd_list[0])
     for i in range(len(WHAT_LIST)):
-    # for i in range(50,len(WHAT_LIST)):
+    # for i in range(98,len(WHAT_LIST)):
         print(f"{i}th iteration")
         if((i % 7 != 0) or i==0):
             print(f"i : {i}")
