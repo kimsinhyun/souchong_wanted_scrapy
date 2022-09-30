@@ -8,36 +8,20 @@ import datetime
 from pprint import pprint
 from html_text import extract_text
 
-# what = ["data","python","java","backend","ai","c++"]
-what = "data"
-
-# place = "Korea"
-country = "www"
 
 class Spider(scrapy.Spider):
     name = 'indeed'
     page_num = 32
     
-    # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(215*10, 500 * 10,10)]
-    # start_urls = [f"https://{country}.indeed.com/jobs?q={what}&sort=date&l=&start={page}" for page in range(0*10, 1000 * 10,10)]
-    # start_urls = [f"https://www.indeed.com/jobs?q=data&sc=0kf%3Ajt(internship)%3B&start={page}&vjk=547fa69c5a112897" for page in range(5*10, 500 * 10,10)]
-    def __init__(self, COOKIE_NUM=0,WHAT="data",START_PAGE=0):
-        self.skill = "Python"
-        self.place = "Korea"
-        self.COOKIE_NUM = COOKIE_NUM
-        self.WHAT = WHAT
-        self.START_PAGE = int(START_PAGE)
-        self.start_urls = [f"https://{country}.indeed.com/jobs?q={WHAT}&sort=date&l=&start={page}" for page in range(int(self.START_PAGE*10), 150 * 10,10)]
-        # pid = os.getpid()
-        # print(f"os.getpid = {pid}")
+    def __init__(self, COOKIE_NUM=0,WHAT="data",START_PAGE=1):
+                            # https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all
+        self.start_urls = [f"https://www.wanted.co.kr/wd/{page}" for page in range(100,9999999)]
         print(f"COOKIE_NUM: {COOKIE_NUM}")
         print(f"WHAT: {WHAT}")
         print(f"START_PAGE: {START_PAGE}")
     def start_requests(self):
         for url in self.start_urls:
-            # print("start scrapping : " + url)
-            time.sleep(8)
-            # time.sleep(1)
+            time.sleep(5)
             try:
                 yield scrapy.Request(url, callback=self.parse)
             except Exception as e:
@@ -45,57 +29,87 @@ class Spider(scrapy.Spider):
                 print(e)
                 raise scrapy.exceptions.CloseSpider()
 
-
     def parse(self, response):
         item = dict()
-        # print("start parse")
-        
-        # job_post_details=response.xpath("//div[@class='j_joblist']/div[@class='e']")
-        job_post_details=response.xpath('//a[@data-hide-spinner="true"]')
-        Next_page_label = response.xpath('//a[@aria-label="Next Page"]')
-        #마지막 페이지이면 stop (실제로 stop보다는 아무것도 return 하지 않음, 중단시키고 싶은데 아직 방법을 모르겠음)
-        if(len(Next_page_label) == 0):
-            Next_page_label = response.xpath('//a[@aria-label="Next"]')
-            if(len(Next_page_label) == 0):
-                print("Last Page! Stop Scraping")
-                # print(f"os.getpid = {os.getpid}")
-                raise scrapy.exceptions.CloseSpider("Close Chrome")
-        #다음 페이지가 존재하면
-        else:
-            # print(f"length of job_post_details: {len(job_post_details)}")
-            for page_num, entry in enumerate(job_post_details):
-                item['search_keyword'] = self.WHAT
-                item["post_url"] = entry.xpath("./@href").get()
-                item['job_title'] = extract_text(entry.get())
-                item['company_location'] = extract_text(response.xpath(\
-                    f'//*[@id="mosaic-provider-jobcards"]/ul/li[{page_num}]/div/div[1]/div/div[1]/div/table[1]/tbody/tr/td/div[2]/span').get())
-                
-                if(item["post_url"].find("/rc/clk") != -1):
-                    item["post_url"] = item["post_url"].replace("/rc/clk","https://www.indeed.com/viewjob")
-                elif(item["post_url"].find("company") != -1):
-                    item["post_url"] = item["post_url"].replace("/company/","https://www.indeed.com/viewjob?cmp=")
-                
-                yield scrapy.Request(item["post_url"],callback=self.parse_detail,meta={'item':copy.deepcopy(item)})
+        # ========================
+        item['job_title'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/h2').get())
+        if(item['job_title'] == None):
+            return
+        item['company_name'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/div[1]/h6/a').get())
+        item['job_tags'] = []
+        job_tags = response.xpath('//div[@class="Tags_tagsClass__mvehZ"]/ul/li').extract()
+        for t in job_tags:
+            item['job_tags'].append(extract_text(t))
 
-    def parse_detail(self,response):
-        item = response.meta['item']
-        item['company_name'] = extract_text(response.xpath('//*[@id="viewJobSSRRoot"]/div[2]/div/div[3]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/div[2]/div/a').get())
-        item['company_rating'] = extract_text(response.xpath('//div[@class="icl-Ratings-starsFilled"]/@style').get()).replace("width:", "").replace("px","")
-        item['company_reviews'] = extract_text(response.xpath('//div[@class="icl-Ratings-count"]').get()).replace(" reviews", "").replace(",","")
-        item['job_salary'] = extract_text(response.xpath('//span[@class="icl-u-xs-mr--xs attribute_snippet"]').get())
-        item['job_salary_estimated_by_indeed'] = extract_text(response.xpath('//*[@id="salaryGuide"]/ul/li[2]/text()').get()).split(" is Indeed's")[0]
-        item['job_contract_type'] = extract_text(response.xpath('//span[@class="icl-u-xs-mr--xs attribute_snippet"]').get())
-        temp_benefits_list  = response.xpath('//span[@class="jobsearch-JobMetadataHeader-item  icl-u-xs-mt--xs"]').extract()
-        item['benefits'] = self.parse_benefits(temp_benefits_list)
-        item['job_description'] = extract_text(response.xpath('//*[@id="jobDescriptionText"]').get())
-        temp_post_date = extract_text(response.xpath('//*[@id="hiringInsightsSectionRoot"]/p/span[2]').get())
-        item['post_date'] = self.parse_date(temp_post_date)
+        company_city = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/div[1]/span/text()[1]').get())
+        skill_stacks = extract_text(response.xpath('//div[@class="JobDescription_JobDescription_skill_wrapper__9EdFE"]').get())
+        post_like_num = response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/aside/div/header/div[3]/button[1]/span/text()').get()
+        job_introduction = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[1]').get())
+        job_main_work = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[2]').get())
+        job_qualifications = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[3]').get())
+        job_preference = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[4]').get())
+        job_other_details = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[5]').get())
         
-        encoded_string = (item['job_title'] + item['post_url']).encode()
+        item['company_city'] = company_city
+        item['job_posting_date'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section[2]/div[1]/span[2]').get())
+        item['job_location'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section[2]/div[2]/span[2]').get())
+        item['skill_stacks'] = skill_stacks.split('\n') if skill_stacks != None else []
+        item['post_like_num'] = post_like_num
+        item['job_introduction'] = job_introduction.split('\n') if job_introduction != None else []
+        item['job_main_work'] = job_main_work.split('\n') if job_main_work != None else []
+        item['job_qualifications'] = job_qualifications.split('\n') if job_qualifications != None else []
+        item['job_preference'] = job_preference.split('\n') if job_preference != None else []
+        item['job_other_details'] = job_other_details.split('\n') if job_other_details != None else []
+        item['total_desciption'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div').get())
+        
+        item['page_source'] = response.body.decode('utf-8')
+        encoded_string = (item['job_title'] + item['company_name'] + item['job_posting_date'] + item['page_source']).encode()
         hexdigest = hashlib.sha256(encoded_string).hexdigest()
-        item['hash_id'] = hexdigest
-        # pprint(item)
+        item['hash_key'] = hexdigest
         yield item
+        # ========================
+
+        # job_post_details=response.xpath('//div[@data-cy="job-card"]')
+        # print(f"length of job_post_details: {len(job_post_details)}")
+        # for page_num, entry in enumerate(job_post_details):
+        #     item["post_url"] = "https://www.wanted.co.kr" + entry.xpath("./a/@href").get()
+        #     yield scrapy.Request(item["post_url"],callback=self.parse_detail,meta={'item':copy.deepcopy(item)})
+
+    # def parse_detail(self,response):
+    #     item = response.meta['item']
+    #     item['job_title'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/h2').get())
+    #     item['company_name'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/div[1]/h6/a').get())
+    #     item['job_tags'] = []
+    #     job_tags = response.xpath('//div[@class="Tags_tagsClass__mvehZ"]/ul/li').extract()
+    #     for t in job_tags:
+    #         item['job_tags'].append(extract_text(t))
+
+    #     company_city = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/div[1]/span/text()[1]').get())
+    #     skill_stacks = extract_text(response.xpath('//div[@class="JobDescription_JobDescription_skill_wrapper__9EdFE"]').get())
+    #     post_like_num = response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/aside/div/header/div[3]/button[1]/span/text()').get()
+    #     job_introduction = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[1]').get())
+    #     job_main_work = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[2]').get())
+    #     job_qualifications = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[3]').get())
+    #     job_preference = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[4]').get())
+    #     job_other_details = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section/p[5]').get())
+        
+    #     item['company_city'] = company_city
+    #     item['job_posting_date'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section[2]/div[1]/span[2]').get())
+    #     item['job_location'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/div[2]/section[2]/div[2]/span[2]').get())
+    #     item['skill_stacks'] = skill_stacks.split('\n') if skill_stacks != None else []
+    #     item['post_like_num'] = post_like_num
+    #     item['job_introduction'] = job_introduction.split('\n') if job_introduction != None else []
+    #     item['job_main_work'] = job_main_work.split('\n') if job_main_work != None else []
+    #     item['job_qualifications'] = job_qualifications.split('\n') if job_qualifications != None else []
+    #     item['job_preference'] = job_preference.split('\n') if job_preference != None else []
+    #     item['job_other_details'] = job_other_details.split('\n') if job_other_details != None else []
+    #     item['total_desciption'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div').get())
+        
+    #     item['page_source'] = response.body.decode('utf-8')
+    #     encoded_string = (item['job_title'] + item['company_name'] + item['job_posting_date'] + item['page_source']).encode()
+    #     hexdigest = hashlib.sha256(encoded_string).hexdigest()
+    #     item['hash_key'] = hexdigest
+    #     yield item
         
     def parse_benefits(self,temp_benefits_list):
         benefits_list = []

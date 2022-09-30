@@ -37,13 +37,9 @@ class DriverOptions(object):
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
         self.options.add_argument("disable-infobars")
-        
-
-
 
         self.helperSpoofer = Spoofer()
-        ua = UserAgent().random
-        print(ua)
+        # ua = UserAgent().random
         # self.options.add_argument(f"user-agent={ua}")
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36")
         
@@ -57,11 +53,13 @@ class WebDriver(DriverOptions,object):
         webdriver.DesiredCapabilities.CHROME['acceptSslCerts'] = True
         chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]  #크롬드라이버 버전 확인
 
+        import platform
+        dirver_exe = "chromedriver.exe" if platform.system()=="Window" else "chromedriver"
         try:     
-            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver',options=self.options)   
+            driver = webdriver.Chrome(f'./{chrome_ver}/{dirver_exe}',options=self.options)   
         except:
             chromedriver_autoinstaller.install(True)
-            driver = webdriver.Chrome(f'./{chrome_ver}/chromedriver',options=self.options)
+            driver = webdriver.Chrome(f'./{chrome_ver}/{dirver_exe}',options=self.options)
 #         driver = webdriver.Chrome(path, options=self.options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
