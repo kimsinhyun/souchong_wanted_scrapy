@@ -21,20 +21,20 @@ class NewPipeline_mongo:
     @classmethod
     def from_crawler(cls, crawler):
         #print(crawler.settings.get('USERNAME'))
-        # 연구실 DB
-        # return cls(
-        #     mongo_uri=crawler.settings.get('MONGO_URI','165.132.172.93'),
-        #     mongo_db=crawler.settings.get('MONGO_DB','wanted'),
-        #     account = crawler.settings.get('USERNAME','thwhd1'),
-        #     passwd = crawler.settings.get('PWD','thwhd1')
-        # )
-        # 개인 VM DB
+        ## 연구실 DB
         return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI','192.168.56.110'),
+            mongo_uri=crawler.settings.get('MONGO_URI','165.132.172.93'),
             mongo_db=crawler.settings.get('MONGO_DB','wanted'),
-            account = crawler.settings.get('USERNAME','test'),
-            passwd = crawler.settings.get('PWD','test')
+            account = crawler.settings.get('USERNAME','thwhd1'),
+            passwd = crawler.settings.get('PWD','thwhd1')
         )
+        # 개인 VM DB
+        # return cls(
+        #     mongo_uri=crawler.settings.get('MONGO_URI','192.168.56.110'),
+        #     mongo_db=crawler.settings.get('MONGO_DB','wanted'),
+        #     account = crawler.settings.get('USERNAME','test'),
+        #     passwd = crawler.settings.get('PWD','test')
+        # )
     def open_spider(self, spider):
         uri = 'mongodb://%s:%s@%s:27017/?authSource=admin' % (self.account, parse.quote_plus(self.passwd),self.mongo_uri)
         self.client = pymongo.MongoClient(uri)

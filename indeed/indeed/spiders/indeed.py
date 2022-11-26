@@ -15,13 +15,13 @@ class Spider(scrapy.Spider):
     
     def __init__(self, COOKIE_NUM=0,WHAT="data",START_PAGE=1):
                             # https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all
-        self.start_urls = [f"https://www.wanted.co.kr/wd/{page}" for page in range(100,9999999)]
+        self.start_urls = [f"https://www.wanted.co.kr/wd/{page}" for page in range(111226,9999999)]
         print(f"COOKIE_NUM: {COOKIE_NUM}")
         print(f"WHAT: {WHAT}")
         print(f"START_PAGE: {START_PAGE}")
     def start_requests(self):
         for url in self.start_urls:
-            time.sleep(5)
+            time.sleep(1)
             try:
                 yield scrapy.Request(url, callback=self.parse)
             except Exception as e:
@@ -32,6 +32,7 @@ class Spider(scrapy.Spider):
     def parse(self, response):
         item = dict()
         # ========================
+        item['pageNum'] = response.request.url.split("/")[-1]
         item['job_title'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div/section[2]/h2').get())
         if(item['job_title'] == None):
             return
@@ -62,8 +63,8 @@ class Spider(scrapy.Spider):
         item['job_other_details'] = job_other_details.split('\n') if job_other_details != None else []
         item['total_desciption'] = extract_text(response.xpath('//*[@id="__next"]/div[3]/div[1]/div[1]/div').get())
         
-        item['page_source'] = response.body.decode('utf-8')
-        encoded_string = (item['job_title'] + item['company_name'] + item['job_posting_date'] + item['page_source']).encode()
+        # item['page_source'] = response.body.decode('utf-8')
+        encoded_string = (item['job_title'] + item['company_name'] + item['job_posting_date'] + item['total_desciption']).encode()
         hexdigest = hashlib.sha256(encoded_string).hexdigest()
         item['hash_key'] = hexdigest
         yield item
