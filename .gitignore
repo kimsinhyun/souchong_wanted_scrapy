@@ -1,0 +1,7 @@
+*.ipynb
+*.ipynb_checkpoints
+10*/
+cookies
+__pycache__
+*.log
+crawlEnv/
